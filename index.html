@@ -1,0 +1,36 @@
+<html>
+
+<head>
+	<button onclick="fun('c:/windows/notepad.exe');">Notepad</button>
+	<button onclick="fun('c:/windows/explorer');"><img id="explorer_icon" src="bsgexplorer.jpg" width="32" height="32"></button>
+</head>
+
+<script>
+var exec = require('child_process').execFile;
+var path = "";
+
+var fun =function(exepath){
+   path = exepath;
+   console.log("fun(path) start");
+   exec(path, function(err, data) {  
+        console.log(err)
+        console.log(data.toString());                       
+    });  
+}
+
+var iconExtractor = require('icon-extractor');
+var fs= require('fs');
+
+iconExtractor.emitter.on('icon', function(data){
+  console.log('Here is my context: ' + data.Context);
+  console.log('Here is the path it was for: ' + data.Path);
+  console.log('Here is the base64 image: ' + data.Base64ImageData);
+		  var icon = data.Base64ImageData;
+			fs.writeFile('bsgexplorer.jpg', icon, 'base64', (err) => {
+			 console.log(err);
+		});
+});
+
+iconExtractor.getIcon('explorer icon','c:/Battlestate Games/BsgLauncher/BsgLauncher.exe');
+
+</script>
