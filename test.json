@@ -1,0 +1,12 @@
+{
+	"Paths": [
+		{
+			"name": "Notepad",
+			"Path": "c:/windows/system32/notepad.exe"
+		},
+		{
+			"name": "Explorer",
+			"Path": "c:/windows/explorer.exe"
+		}
+	]
+}

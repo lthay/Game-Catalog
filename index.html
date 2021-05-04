@@ -1,11 +1,29 @@
 <html>
-
 <head>
-	<button onclick="fun('c:/windows/notepad.exe');">Notepad</button>
-	<button onclick="fun('c:/windows/explorer');"><img id="explorer_icon" src="bsgexplorer.jpg" width="32" height="32"></button>
-</head>
-
 <script>
+//-------------------------------------------------------------------------------------//
+//json section testing
+'use strict';
+const fsjson = require("fs");
+var icon_array = [];
+
+fsjson.readFile('test.json', (err, data) => {
+	if (err) throw err;
+	var jsondata = JSON.parse(data);
+	icon_array.push(jsondata);
+	console.log(icon_array[0]);
+	var btn = document.createElement("button");
+	var btn_name = icon_array[0].Paths[0].name;
+	var btn_path = icon_array[0].Paths[0].path;
+	var element_div = document.getElementById("links");
+
+});
+
+//-------------------------------------------------------------------------------------//
+
+
+//-------------------------------------------------------------------------------------//
+//Adding exe path to button testing
 var exec = require('child_process').execFile;
 var path = "";
 
@@ -17,20 +35,58 @@ var fun =function(exepath){
         console.log(data.toString());                       
     });  
 }
+//-------------------------------------------------------------------------------------//
 
+
+//-------------------------------------------------------------------------------------//
+//Saving and adding the icon to a button testing
 var iconExtractor = require('icon-extractor');
 var fs= require('fs');
+var icon_name = "";
 
 iconExtractor.emitter.on('icon', function(data){
-  console.log('Here is my context: ' + data.Context);
-  console.log('Here is the path it was for: ' + data.Path);
-  console.log('Here is the base64 image: ' + data.Base64ImageData);
+  //console.log('Here is my context: ' + data.Context);
+  //console.log('Here is the path it was for: ' + data.Path);
+  //console.log('Here is the base64 image: ' + data.Base64ImageData);
 		  var icon = data.Base64ImageData;
-			fs.writeFile('bsgexplorer.jpg', icon, 'base64', (err) => {
-			 console.log(err);
+			icon_name = data.Context;
+			fs.writeFile("./icons/" + icon_name + ".jpg", icon, 'base64', (err) => {
+			 //console.log(err);
 		});
 });
 
-iconExtractor.getIcon('explorer icon','c:/Battlestate Games/BsgLauncher/BsgLauncher.exe');
+iconExtractor.getIcon('explorer','c:/windows/explorer.exe');
+iconExtractor.getIcon('notepad','c:/windows/system32/notepad.exe');
+iconExtractor.getIcon('clonehero','E:/clonehero-win64/Clone Hero.exe');
+iconExtractor.getIcon('mcc','D:/SteamLibrary/steamapps/common/Halo The Master Chief Collection/mcclauncher.exe');
+iconExtractor.getIcon('trials','D:/Ubisoft/Trials Rising/datapack/trialsrising.exe');
+iconExtractor.getIcon('starwars','D:/Origin/STAR WARS Battlefront II/starwarsbattlefrontii.exe');
+//-------------------------------------------------------------------------------------//
+
 
 </script>
+</head>
+
+<body>
+
+<div id="links"></div>
+
+<!-- hard coding in buttons to test links from various sources-->
+<button style="border: none; background-color: #FFFFFF;" onclick="fun('c:/windows/system32/notepad.exe');"><img id="notepad_icon" src="icons/notepad.jpg" width="64" height="64"></br>Notepad</button>
+<button style="border: none; background-color: #FFFFFF;" onclick="fun('c:/windows/explorer.exe');"><img id="explorer_icon" src="icons/explorer.jpg" width="64" height="64"></br>File Explorer</button>
+<button style="border: none; background-color: #FFFFFF;" onclick="fun('E:/clonehero-win64/Clone Hero.exe');"><img id="clonehero_icon" src="icons/clonehero.jpg" width="64" height="64"></br>Clone Hero</button>
+<button style="border: none; background-color: #FFFFFF;" onclick="fun('D:/SteamLibrary/steamapps/common/Halo The Master Chief Collection/mcclauncher.exe');"><img id="mcc_icon" src="icons/mcc.jpg" width="64" height="64"></br>Halo MCC</button>
+	
+	<button style="border: none; background-color: #FFFFFF;" 
+		onclick="fun('D:/Ubisoft/Trials Rising/datapack/trialsrising.exe');">
+		<img id="trials_icon" src="icons/trials.jpg" width="64" height="64">
+		</br>Trials Rising
+	</button>
+
+	<button style="border: none; background-color: #FFFFFF;" 
+		onclick="fun('D:/Origin/STAR WARS Battlefront II/starwarsbattlefrontii.exe');">
+		<img id="starwars_icon" src="icons/starwars.jpg" width="64" height="64">
+		</br>Star Wars BFII
+	</button>
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+</body>
